@@ -77,6 +77,6 @@ stages:
         ConnectionType: 'AzureRM'
         azureSubscription: 'GiftCardAzureSubscription'
         appType: 'webApp'
-        WebAppName: $WEBAPPNAMEAPI
+        WebAppName: '$WEBAPPNAMEAPI'
         packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
 
