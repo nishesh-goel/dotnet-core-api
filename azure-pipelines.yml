@@ -71,7 +71,7 @@ stages:
     - task: AzureRmWebAppDeployment@4
       inputs:
         ConnectionType: 'AzureRM'
-        azureSubscription: 'labAzureSubscription'
+        azureSubscription: 'GiftCardAzureSubscription'
         appType: 'webApp'
         WebAppName: '$(WEBAPPNAMEAPI)'
         packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
