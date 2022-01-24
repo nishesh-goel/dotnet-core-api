@@ -37,3 +37,42 @@ stages:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
         ArtifactName: 'drop'
         publishLocation: 'Container'
+
+- stage: DeployAzureResources
+  jobs:
+    - job: DeployAzureResources
+      pool:
+        vmImage: 'windows-latest'
+      steps:
+      - task: AzureCLI@2
+        inputs:
+          azureSubscription: 'GiftCardAzureSubscription'
+          scriptType: 'bash'
+          scriptLocation: 'inlineScript'
+          inlineScript: |
+            # create and configure an Azure App Service plan and an Azure web app
+            az appservice plan create -g $RESOURCEGROUPNAME -n $SVCPLANNAME --sku FREE
+            az webapp create -g $RESOURCEGROUPNAME -p $SVCPLANNAME -n $WEBAPPNAMEAPI
+
+- stage: DeployAPIApp
+  jobs: 
+  - job: DeployAPIApp
+    pool: 
+      vmImage: 'windows-latest'
+    steps:
+
+    - task: DownloadBuildArtifacts@0
+      inputs:
+        buildType: 'current'
+        downloadType: 'single'
+        artifactName: 'drop'
+        downloadPath: '$(System.DefaultWorkingDirectory)'
+
+    - task: AzureRmWebAppDeployment@4
+      inputs:
+        ConnectionType: 'AzureRM'
+        azureSubscription: 'labAzureSubscription'
+        appType: 'webApp'
+        WebAppName: '$(WEBAPPNAMEAPI)'
+        packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+
