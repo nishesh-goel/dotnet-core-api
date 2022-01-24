@@ -68,11 +68,12 @@ stages:
         artifactName: 'drop'
         downloadPath: '$(System.DefaultWorkingDirectory)'
 
+
     - task: AzureRmWebAppDeployment@4
       inputs:
         ConnectionType: 'AzureRM'
         azureSubscription: 'GiftCardAzureSubscription'
         appType: 'webApp'
-        WebAppName: '$(WEBAPPNAMEAPI)'
+        WebAppName: 'TodoApi20220123195509'
         packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
 
